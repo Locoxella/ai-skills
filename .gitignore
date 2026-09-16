@@ -1,0 +1,24 @@
+# OS metadata and caches
+.DS_Store
+Thumbs.db
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Temporary files and scratchpads
+scratch/
+tmp/
+*.tmp
+*.log
+
+# Environment and sensitive secrets
+.env
+.env.*
+!.env.example
+secrets.*
+*.pem
+*.key
