@@ -105,9 +105,9 @@ get_target_dir() {
   case "${agent}" in
     antigravity)
       if [[ "${scope}" == "global" ]]; then
-        echo "${HOME}/.gemini/antigravity/skills"
+        echo "${HOME}/.gemini/config/skills"
       else
-        echo "$(pwd)/.antigravity/skills"
+        echo "$(pwd)/.agents/skills"
       fi
       ;;
     cursor)

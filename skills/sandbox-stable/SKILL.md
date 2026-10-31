@@ -1,17 +1,18 @@
 ---
 name: sandbox-stable
-description: Use when building or changing Cloudflare Sandbox apps on the current stable @cloudflare/sandbox package (default npm tag)—commands, sessions, files, ports, tunnels, terminals, bridge, production, or deprecated-API cleanup while staying on stable. Not for @cloudflare/sandbox@next (use sandbox-next) or for porting to 1.0 (use sandbox-migrate-to-next).
+description: Use when building or maintaining Cloudflare Sandbox apps on legacy @cloudflare/sandbox <1.0.0 (0.12.x line)—commands, sessions, files, ports, tunnels, terminals, bridge, production, or deprecated-API cleanup. For Sandbox SDK 1.0+ (current GA / latest release on npm), use sandbox-next or port via sandbox-migrate-to-next.
 ---
 
-# Sandbox SDK — stable package
+# Sandbox SDK — legacy 0.12.x package
 
 Isolated Linux environments on [Cloudflare Containers](https://developers.cloudflare.com/containers/), driven from Workers.
 
 **Prefer the main Sandbox docs and installed stable types over memory.** This skill is a gate, a contract, and a retrieval map—not a full manual.
 
-This line is the **current stable** default npm package. The main [Sandbox documentation](https://developers.cloudflare.com/sandbox/) describes it. Existing apps can stay here and keep shipping.
+> [!NOTE]
+> Sandbox SDK 1.0+ is now GA and the default `latest` release on npm. This skill covers legacy applications pinned to `@cloudflare/sandbox` 0.12.x (`<1.0.0`). New projects and modern apps should use **`sandbox-next`** (1.0+ GA).
 
-We recommend **new projects** on `@cloudflare/sandbox@next` with **`sandbox-next`**. When you can, plan a move with **`sandbox-migrate-to-next`** so you are ready when 1.0 becomes the stable release. Do not force that port unless the user asks.
+Existing apps on the 0.12.x line can stay here and keep shipping. Plan a move with **`sandbox-migrate-to-next`** when ready to upgrade to 1.0+. Do not force that port unless the user asks.
 
 ## 1. Gate — confirm the package line
 
@@ -19,14 +20,14 @@ Before writing code, inspect the app:
 
 | Check | Must match |
 | ----- | ---------- |
-| npm dependency | Default `@cloudflare/sandbox` (**not** `@next` / preview tags) |
-| Container image | Matching **stable** image (not `cloudflare/sandbox:next`) |
+| npm dependency | Legacy `@cloudflare/sandbox` (`<1.0.0` or pinned to `0.12.x`) |
+| Container image | Matching **stable 0.12.x** image (not `cloudflare/sandbox:next`) |
 
 | If you find… | Action |
 | ------------ | ------ |
-| `@cloudflare/sandbox@next` or a `next` image | **Stop.** Load **`sandbox-next`**. |
-| User wants to port to 1.0 / `@next` | **Stop.** Load **`sandbox-migrate-to-next`**. Do not half-apply preview APIs on a stable package. |
-| Only cleaning deprecated stable APIs | Stay here; use the [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/). That is **not** a move to `@next`. |
+| `@cloudflare/sandbox` >= 1.0.0, `@next`, or modern container image | **Stop.** Load **`sandbox-next`**. |
+| User wants to port to 1.0+ / `@next` | **Stop.** Load **`sandbox-migrate-to-next`**. Do not half-apply 1.0 APIs on a 0.12.x package. |
+| Only cleaning deprecated stable APIs | Stay here; use the [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/). That is **not** a move to 1.0. |
 
 Never mix a stable Worker package with an `@next` container image (or the reverse).
 

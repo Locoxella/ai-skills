@@ -20,6 +20,10 @@ PATH_ARG=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --path) need_arg "$1" "${2-}"; PATH_ARG="$2"; shift 2 ;;
+    -h|--help)
+      echo "Usage: persist-skill.sh --path <project-path-to-SKILL.md>"
+      exit 0
+      ;;
     *) echo "persist-skill: unknown arg $1" >&2; exit 2 ;;
   esac
 done

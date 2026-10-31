@@ -67,16 +67,17 @@ npx --yes markdownlint-cli --fix path/to/document.md
 
 ## Verification Step
 
-Always run the linter on the target file before completing the task:
+Always run the linter on the target file before completing the task.
+Note: When passing `--disable`, terminate the list of rules with `--` before the file path so the CLI knows the path is not a rule:
 
 ```bash
-npx --yes markdownlint-cli --disable MD013 path/to/edited-file.md
+npx --yes markdownlint-cli --disable MD013 -- path/to/edited-file.md
 ```
 
 To automatically fix formatting issues:
 
 ```bash
-npx --yes markdownlint-cli --disable MD013 --fix path/to/edited-file.md
+npx --yes markdownlint-cli --disable MD013 --fix -- path/to/edited-file.md
 ```
 
 Ensure the command exits cleanly with code `0`.

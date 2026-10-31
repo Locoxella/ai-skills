@@ -57,11 +57,11 @@ def update_readme(catalog):
         short_desc = desc if len(desc) <= 50 else desc[:47] + "..."
         tree_lines.append(f"{prefix}{name:<27} # {short_desc}")
 
-    tree_str = "```\n" + "\n".join(tree_lines) + "\n```"
+    tree_str = "```text\n" + "\n".join(tree_lines) + "\n```"
 
     # Replace the tree in README.md
     new_content = re.sub(
-        r"```\nai-skills/\n.*?```",
+        r"```(?:text)?\nai-skills/\n.*?```",
         tree_str,
         content,
         flags=re.DOTALL

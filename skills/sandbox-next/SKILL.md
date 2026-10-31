@@ -1,15 +1,18 @@
 ---
 name: sandbox-next
-description: Use when building or changing Cloudflare Sandbox apps on @cloudflare/sandbox@next (Sandbox SDK 1.0 preview)—code execution, AI runners, interpreters, CI-like jobs, terminals, files, mounts, tunnels, preview URLs, lifecycle, or errors. Not for the default stable package (use sandbox-stable) or for porting stable to @next (use sandbox-migrate-to-next).
+description: Use when building or changing Cloudflare Sandbox apps on @cloudflare/sandbox 1.0+ (current GA / latest) or @next—code execution, process handles, AI runners, interpreters, CI-like jobs, terminals, files, mounts, tunnels, preview URLs, lifecycle, or errors. For legacy 0.12.x apps, use sandbox-stable.
 ---
 
-# Sandbox SDK — `@next` (1.0 preview)
+# Sandbox SDK — 1.0 (GA / Current Stable) & `@next`
 
 Isolated Linux environments on [Cloudflare Containers](https://developers.cloudflare.com/containers/), driven from Workers.
 
-**Prefer preview docs and installed `@next` types over memory.** APIs change; this skill is a gate, a contract, and a retrieval map—not a full manual.
+**Prefer latest docs and installed types over memory.** APIs change; this skill is a gate, a contract, and a retrieval map—not a full manual.
 
-We recommend **new projects** on this line. Apps still on the default package use **`sandbox-stable`**. Port only when asked, via **`sandbox-migrate-to-next`**.
+> [!NOTE]
+> Sandbox SDK 1.0+ is now GA (General Availability) and the default `latest` release on npm (`npm i @cloudflare/sandbox`). This skill covers the modern 1.0+ process-handle model and `@next` preview builds.
+
+We recommend **new projects** on this line (1.0+ GA). Legacy apps still on 0.12.x use **`sandbox-stable`**. Port legacy apps via **`sandbox-migrate-to-next`**.
 
 ## 1. Gate — confirm the package line
 
@@ -17,14 +20,14 @@ Before writing code, inspect the app:
 
 | Check | Must match |
 | ----- | ---------- |
-| npm dependency | `@cloudflare/sandbox@next` (or another preview tag) |
-| Container image | Same line (e.g. `cloudflare/sandbox:next`, `next-python`) |
+| npm dependency | `@cloudflare/sandbox` >= 1.0.0 (or `@next`) |
+| Container image | Modern 1.0/next line (e.g. `cloudflare/sandbox:latest`, `cloudflare/sandbox:next`, `next-python`) |
 
 | If you find… | Action |
 | ------------ | ------ |
-| Default `@cloudflare/sandbox` (no `@next`) | **Stop.** Load **`sandbox-stable`**. Do not apply this skill’s APIs. |
-| User wants to port stable → `@next` | **Stop.** Load **`sandbox-migrate-to-next`**. |
-| Self-deployed **bridge** only | Bridge is **not** on the 1.0 preview line yet. Keep bridge on stable package + image. [Bridge (stable)](https://developers.cloudflare.com/sandbox/bridge/) |
+| Legacy `@cloudflare/sandbox` <1.0.0 (0.12.x) | **Stop.** Load **`sandbox-stable`**. Do not apply 1.0 handle APIs to 0.12.x. |
+| User wants to port legacy 0.12.x → 1.0+ | **Stop.** Load **`sandbox-migrate-to-next`**. |
+| Self-deployed **bridge** only | Bridge is **not** on the 1.0 line yet. Keep bridge on legacy 0.12.x package + image. [Bridge](https://developers.cloudflare.com/sandbox/bridge/) |
 
 Never mix an `@next` Worker package with a stable container image (or the reverse).
 

@@ -48,7 +48,8 @@ Native forms that navigate do not need reset logic. For each same-page flow, ver
 After Step 11:
 
 ```sh
-test -f .claude/skills/turnstile-spin/SKILL.md \
+test -f .agents/skills/turnstile-spin/SKILL.md \
+  || test -f .claude/skills/turnstile-spin/SKILL.md \
   || test -f .codex/skills/turnstile-spin/SKILL.md \
   || test -f .opencode/skills/turnstile-spin/SKILL.md
 ```

@@ -83,6 +83,7 @@ trap 'rm -f "$TEMP_FILE"' EXIT
 echo "Fetching .gitignore templates for: ${API_TARGETS}..." >&2
 if ! curl -fsSL "$API_URL" -o "$TEMP_FILE"; then
   echo "Error: Failed to fetch from ${API_URL}" >&2
+  echo "Tip: Verify that all target names are valid at https://www.toptal.com/developers/gitignore/api/list" >&2
   exit 1
 fi
 

@@ -22,6 +22,10 @@ while [[ $# -gt 0 ]]; do
     --name) need_arg "$1" "${2-}"; NAME="$2"; shift 2 ;;
     --domains) need_arg "$1" "${2-}"; DOMAINS="$2"; shift 2 ;;
     --mode) need_arg "$1" "${2-}"; MODE="$2"; shift 2 ;;
+    -h|--help)
+      echo "Usage: widget-create.sh --account-id <id> --name <widget-name> --domains <csv-domains> [--mode managed|invisible|non-interactive]"
+      exit 0
+      ;;
     *) echo "widget-create: unknown arg $1" >&2; exit 2 ;;
   esac
 done

@@ -1,19 +1,19 @@
 ---
 name: sandbox-migrate-to-next
-description: Use when porting a Cloudflare Sandbox app from stable @cloudflare/sandbox to @cloudflare/sandbox@next (Sandbox SDK 1.0 preview), or when the user asks to migrate or upgrade to Sandbox 1.0 / @next. Not for day-to-day stable work (sandbox-stable) or new @next apps (sandbox-next).
+description: Use when porting a Cloudflare Sandbox app from legacy 0.12.x (<1.0.0) to Sandbox SDK 1.0+ (current GA / latest) or @next. Not for day-to-day legacy work (sandbox-stable) or modern 1.0+ apps (sandbox-next).
 ---
 
-# Migrate stable → Sandbox SDK 1.0 preview (`@next`)
+# Migrate legacy 0.12.x → Sandbox SDK 1.0+ (GA)
 
 **Perform** the port. Follow the steps in order. Depth lives in docs—fetch the linked page when a step needs detail.
 
-Human guide: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 preview](https://developers.cloudflare.com/sandbox/1-0-preview/)
+Human guide: [Migrate](https://developers.cloudflare.com/sandbox/1-0-preview/migrate/) · [1.0 overview](https://developers.cloudflare.com/sandbox/1-0-preview/)
 
-**New projects** should start on `@next` (**`sandbox-next`**), not this skill. **Day-to-day stable work** → **`sandbox-stable`**. Deprecated-API cleanup **without** moving to `@next` → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) first if needed.
+**New projects** should start on 1.0+ (**`sandbox-next`**), not this skill. **Day-to-day legacy 0.12.x work** → **`sandbox-stable`**. Deprecated-API cleanup **without** moving to 1.0+ → [2026 deprecation guide](https://developers.cloudflare.com/sandbox/guides/2026-deprecation/) first if needed.
 
-Existing apps should migrate **when you can**, so you are ready when 1.0 becomes the stable release. Do **not** force production cutover without the user agreeing.
+Existing apps on 0.12.x should migrate to 1.0+ (now GA). Do **not** force production cutover without the user agreeing.
 
-**Prefer installed `@next` types and the migrate doc over memory.**
+**Prefer installed types and the migrate doc over memory.**
 
 ## Workflow
 

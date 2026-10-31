@@ -15,7 +15,7 @@
 
 ## 📂 Repository Structure
 
-```
+```text
 ai-skills/
 ├── README.md               # Human overview & quick start (this file)
 ├── AGENTS.md               # Strict operational instructions for AI agents
@@ -41,7 +41,7 @@ ai-skills/
     ├── offline-html-dashboard      # Guidelines and patterns for creating modular, i...
     ├── sandbox-migrate-to-next     # Use when porting a Cloudflare Sandbox app from ...
     ├── sandbox-next                # Use when building or changing Cloudflare Sandbo...
-    ├── sandbox-stable              # Use when building or changing Cloudflare Sandbo...
+    ├── sandbox-stable              # Use when building or maintaining Cloudflare San...
     ├── skill-contribute            # Protocols for contributing new skills, workflow...
     ├── turnstile-spin              # Set up Cloudflare Turnstile end-to-end in a pro...
     ├── web-perf                    # Analyzes web performance using Chrome DevTools ...
@@ -74,25 +74,33 @@ Use the bundled installation utility to symlink skills into your agent's configu
 ### Manual Installation
 
 #### 1. Google Antigravity
+
 To install a skill globally for Antigravity:
+
 ```bash
-# Symlink or copy the skill into your global Antigravity skills directory:
-ln -s "$(pwd)/skills/<skill-name>" "$HOME/.gemini/antigravity/skills/<skill-name>"
+# Symlink or copy the skill into your global Antigravity config directory:
+ln -s "$(pwd)/skills/<skill-name>" "$HOME/.gemini/config/skills/<skill-name>"
 ```
+
 Or for a specific project workspace:
+
 ```bash
-ln -s "$(pwd)/skills/<skill-name>" "/path/to/project/.antigravity/skills/<skill-name>"
+ln -s "$(pwd)/skills/<skill-name>" "/path/to/project/.agents/skills/<skill-name>"
 ```
 
 #### 2. Claude Code / Anthropic
+
 Copy the desired skill contents or include it in `CLAUDE.md`:
+
 ```bash
 # Append skill instructions to your project CLAUDE.md or reference them
 cat skills/<skill-name>/SKILL.md >> /path/to/project/CLAUDE.md
 ```
 
 #### 3. Cursor / Codex / Copilot
+
 Place the skill into `.cursorrules` or `.github/copilot-instructions.md`, or reference the markdown file directly in your system prompts:
+
 ```bash
 cp skills/<skill-name>/SKILL.md /path/to/project/.cursorrules
 ```
@@ -103,16 +111,19 @@ cp skills/<skill-name>/SKILL.md /path/to/project/.cursorrules
 
 1. **Keep Skills Atomic**: Each folder should address one clear capability or domain.
 2. **Follow the Standard Frontmatter**:
+
    ```markdown
    ---
    name: skill-name
    description: When and why to activate this skill.
    ---
    ```
+
 3. **No Secrets**: Never commit private keys, real tokens, or personal server passwords. Use placeholders (`<API_KEY>`, `<HOST_IP>`).
 4. **Agent Guidelines**: Refer to [`AGENTS.md`](AGENTS.md) for full instructions on autonomous agent maintenance.
 
 ---
 
 ## 📄 License
+
 MIT or compatible permissive open-source license.
