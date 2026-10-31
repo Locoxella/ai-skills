@@ -54,13 +54,19 @@ When an agent is tasked with updating, modifying, or creating skills in this rep
 
 ### B. Creating New Skills
 1. Choose a concise, descriptive `kebab-case` name (e.g., `git-commit-push`, `docker-compose-ops`).
-2. Add the YAML frontmatter (`name`, `description`). The description is the primary hook agents use for semantic activation.
-3. Keep instructions deterministic. Where multiple valid approaches exist, prescribe the recommended best practice first.
+2. Scaffold automatically via `./scripts/new-skill.sh <skill-name>` or follow the standard structure manually.
+3. Add the YAML frontmatter (`name`, `description`). The description is the primary hook agents use for semantic activation.
+4. Keep instructions deterministic. Where multiple valid approaches exist, prescribe the recommended best practice first.
 
 ### C. Security & Secrets Policy
 - **ZERO SECRETS POLICY**: Never commit API keys, authentication tokens, private SSH keys, internal passwords, or production server IPs/credentials.
 - Use placeholders (e.g., `<API_KEY>`, `<HOST_IP>`, `${ENV_VAR}`) in all examples and templates.
 - Before committing or finishing work, run a diff audit to confirm no private artifacts are staged.
+
+### D. Automated Quality Gate
+Before staging or pushing changes:
+1. Run `python3 scripts/validate-skills.py` to ensure schema compliance, link validity, and zero secrets.
+2. If skills were added, deleted, or descriptions altered, execute `python3 scripts/generate-catalog.py` to refresh the README catalog.
 
 ---
 

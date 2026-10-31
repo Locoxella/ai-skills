@@ -19,32 +19,61 @@
 ai-skills/
 ├── README.md               # Human overview & quick start (this file)
 ├── AGENTS.md               # Strict operational instructions for AI agents
-├── .gitignore              # Standard git exclusion rules
-└── skills/                 # Library of skills
-    ├── agents-sdk/                 # Cloudflare Agents SDK patterns & workflows
-    ├── cloudflare/                 # Cloudflare core architecture and guidelines
-    ├── cloudflare-email-service/   # Cloudflare Email Routing & worker handling
-    ├── cloudflare-one/             # Zero Trust & Cloudflare One architecture
-    ├── cloudflare-one-migrations/  # Zero Trust migration procedures
-    ├── durable-objects/            # Cloudflare Durable Objects best practices
-    ├── git-commit-push/            # Atomic commit, test verification & push workflow
-    ├── gitignore-io/               # .gitignore hygiene via gitignore.io API
-    ├── language-and-token-efficiency/ # Context window & token preservation rules
-    ├── sandbox-migrate-to-next/    # Sandbox environment migrations
-    ├── sandbox-next/               # Sandbox Next reference implementation
-    ├── sandbox-stable/             # Sandbox Stable configuration
-    ├── skill-contribute/           # Dynamic discovery & upstream contribution of skills
-    ├── turnstile-spin/             # Cloudflare Turnstile integration
-    ├── web-perf/                   # Web performance & Core Web Vitals optimization
-    ├── workers-best-practices/     # Cloudflare Workers development best practices
-    └── wrangler/                   # Wrangler CLI reference, commands & workflows
+├── LICENSE                 # Open-source MIT license
+├── .gitignore              # Standard git exclusion rules (gitignore.io)
+├── .github/workflows/      # Automated CI workflows (skills validation)
+├── scripts/                # Validation and multi-agent management scripts
+│   ├── validate-skills.py  # Linting & verification suite for skills
+│   ├── install-skills.sh   # Automated symlink installer for agents
+│   ├── new-skill.sh        # Scaffolding tool for new skills
+│   └── generate-catalog.py # Catalog generator
+└── skills/                 # Catalog of AI skills
+    ├── agents-sdk                  # Build AI agents on Cloudflare Workers using the...
+    ├── cloudflare                  # Comprehensive Cloudflare platform skill coverin...
+    ├── cloudflare-email-service    # Send and receive transactional emails with Clou...
+    ├── cloudflare-one              # Guides Cloudflare One Zero Trust and SASE work ...
+    ├── cloudflare-one-migrations   # Plans migrations from Zscaler ZIA/ZPA, Palo Alt...
+    ├── durable-objects             # Create and review Cloudflare Durable Objects. U...
+    ├── git-commit-push             # Ensures verified, tested code changes are stage...
+    ├── gitignore-generator         # Generates comprehensive, battle-tested .gitigno...
+    ├── language-and-token-efficiency # Directives for language boundaries and token op...
+    ├── markdown-linting            # Ensures that human-facing markdown files (such ...
+    ├── offline-html-dashboard      # Guidelines and patterns for creating modular, i...
+    ├── sandbox-migrate-to-next     # Use when porting a Cloudflare Sandbox app from ...
+    ├── sandbox-next                # Use when building or changing Cloudflare Sandbo...
+    ├── sandbox-stable              # Use when building or changing Cloudflare Sandbo...
+    ├── skill-contribute            # Protocols for contributing new skills, workflow...
+    ├── turnstile-spin              # Set up Cloudflare Turnstile end-to-end in a pro...
+    ├── web-perf                    # Analyzes web performance using Chrome DevTools ...
+    ├── workers-best-practices      # Reviews and authors Cloudflare Workers code aga...
+    └── wrangler                    # Cloudflare Workers CLI for deploying, developin...
 ```
 
 ---
 
 ## 🚀 How to Use These Skills with Your Agents
 
-### 1. Google Antigravity
+### Automated Installation (Recommended)
+
+Use the bundled installation utility to symlink skills into your agent's configuration:
+
+```bash
+# List all available skills
+./scripts/install-skills.sh --list
+
+# Install all skills globally for Google Antigravity
+./scripts/install-skills.sh --agent antigravity --all
+
+# Install a specific skill for Cursor or Claude Code
+./scripts/install-skills.sh --agent cursor --skill cloudflare
+./scripts/install-skills.sh --agent claude --skill git-commit-push
+```
+
+---
+
+### Manual Installation
+
+#### 1. Google Antigravity
 To install a skill globally for Antigravity:
 ```bash
 # Symlink or copy the skill into your global Antigravity skills directory:
@@ -55,14 +84,14 @@ Or for a specific project workspace:
 ln -s "$(pwd)/skills/<skill-name>" "/path/to/project/.antigravity/skills/<skill-name>"
 ```
 
-### 2. Claude Code / Anthropic
+#### 2. Claude Code / Anthropic
 Copy the desired skill contents or include it in `CLAUDE.md`:
 ```bash
 # Append skill instructions to your project CLAUDE.md or reference them
 cat skills/<skill-name>/SKILL.md >> /path/to/project/CLAUDE.md
 ```
 
-### 3. Cursor / Codex / Copilot
+#### 3. Cursor / Codex / Copilot
 Place the skill into `.cursorrules` or `.github/copilot-instructions.md`, or reference the markdown file directly in your system prompts:
 ```bash
 cp skills/<skill-name>/SKILL.md /path/to/project/.cursorrules

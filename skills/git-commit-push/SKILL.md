@@ -1,12 +1,12 @@
 ---
 name: git-commit-push
-description: Ensures verified, tested code changes are staged, committed with conventional messages, and pushed to the remote Git repository. Also enforces clean .gitignore maintenance via gitignore.io. Use when finishing a coding task, preparing commits, or managing gitignore exclusions.
+description: Ensures verified, tested code changes are staged, committed with conventional messages, and pushed to the remote Git repository. Also enforces clean .gitignore maintenance via gitignore-generator. Use when finishing a coding task, preparing commits, or managing gitignore exclusions.
 ---
 
 # Git Commit & Push Workflow
 
 ## Description
-Ensures that all verified, tested, and working code changes are consistently staged, committed with conventional messages, and pushed to the remote Git repository before completing any task. Additionally enforces clean `.gitignore` hygiene via the `gitignore-io` skill.
+Ensures that all verified, tested, and working code changes are consistently staged, committed with conventional messages, and pushed to the remote Git repository before completing any task. Additionally enforces clean `.gitignore` hygiene via the `gitignore-generator` skill.
 
 ## Trigger Conditions
 - All implementation steps for the requested task or bugfix are complete.
@@ -29,7 +29,7 @@ NEVER push unverified code. Before staging:
   - No secrets, tokens, or sensitive credentials are being committed.
   - No temporary debug code, leftover logs, or unintended environment files are staged.
   - Changes strictly adhere to project `.gitignore` rules.
-  - If untracked OS/IDE artifacts appear (`.DS_Store`, `.idea/`, `__pycache__`), invoke the `gitignore-io` skill to standardize the repository `.gitignore` before committing.
+  - If untracked OS/IDE artifacts appear (`.DS_Store`, `.idea/`, `__pycache__`), invoke the `gitignore-generator` skill to standardize the repository `.gitignore` before committing.
 
 ### 3. Staging & Atomic Commits
 - Stage only relevant files (prefer atomic commits grouped by logical scope rather than blind `git add .`).
