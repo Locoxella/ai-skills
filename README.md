@@ -45,11 +45,33 @@ ai-skills/
 
 ---
 
-## 🚀 How to Use These Skills with Your Agents
+## 🚀 How to Install & Adopt Skills
 
-### Automated Installation (Recommended)
+### 1. 🤖 One-Shot Agent Self-Installation (Recommended)
 
-Use the bundled installation utility to symlink skills into your agent's configuration:
+Instead of manually running terminal commands, paste one of the following prompts into your AI coding assistant (Antigravity, Cursor, Claude Code, etc.):
+
+#### Option A: Global Installation (All Skills)
+
+Copy and paste to your agent:
+
+```text
+Adopt all skills from https://github.com/Locoxella/ai-skills: inspect or clone the repository and run ./scripts/install-skills.sh --all to install them into my global agent configuration directory.
+```
+
+#### Option B: Workspace-Scoped Installation (Specific Skills)
+
+Copy and paste to your agent in your current project:
+
+```text
+Inspect https://github.com/Locoxella/ai-skills and install the <skill-name> skill into this project workspace (.agents/skills/ or .cursor/skills/) so it is active for this repository.
+```
+
+---
+
+### 2. 💻 Scripted Installation (CLI / Dotfiles)
+
+Use the bundled installation script to symlink skills into your agent's configuration:
 
 ```bash
 # List all available skills
@@ -65,7 +87,7 @@ Use the bundled installation utility to symlink skills into your agent's configu
 
 ---
 
-### Manual Installation
+### 3. 📂 Manual Symlink Installation
 
 #### 1. Google Antigravity
 
