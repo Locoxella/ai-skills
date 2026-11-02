@@ -1,6 +1,6 @@
 ---
 name: language-and-token-efficiency
-description: Directives for language boundaries and token optimization. Enforces English for skills, rules, code, commits, docs, and agent scratchpads, while keeping chat interactions in Spanish.
+description: Directives for language boundaries and token optimization. Enforces English for skills, rules, code, commits, docs, agent scratchpads, and chat interactions by default (Spanish only upon explicit user request).
 ---
 
 # Language, Token Optimization & Documentation Directives
@@ -18,10 +18,11 @@ You must adopt this policy as a fundamental operational rule across all tasks, s
 | **Internal Scratchpads, Agent Thoughts & Logs** | **English** | Consumes output tokens and cascades into future turn inputs. Must remain concise and in English. |
 | **Codebase & Commits** | **English** | Code comments, docstrings, variable names, commit messages, and PR descriptions. |
 | **Documentation & Project Files** | **English** | `README.md`, architecture docs, operational runbooks, and config files default to English. |
-| **Chat / Conversational Responses to Me** | **Spanish** | You must address me in Spanish in the chat interface unless explicitly asked otherwise. |
+| **Chat / Conversational Responses** | **English (Default)** | Default to English for maximum conciseness and token economy. Only reply in Spanish if the user explicitly requests Spanish. |
 
 ## 3. Exceptions & Overrides
-* **Human-Facing Documentation Override:** All documentation defaults to English. Only write documentation (such as a `README.md` or end-user manuals) in Spanish or another language if I **explicitly** instruct you: *"Generate this documentation in [Language]"*.
+* **Chat Language Override**: Only switch conversational responses to Spanish when the user explicitly requests answers in Spanish.
+* **Human-Facing Documentation Override:** All documentation defaults to English. Only write documentation (such as a `README.md` or end-user manuals) in Spanish or another language if explicitly instructed: *"Generate this documentation in [Language]"*.
 * **Code Strings / i18n:** User-facing localization strings within application code should follow the project's localization requirements.
 
 ## 4. Skills Integration & Self-Enforcement
