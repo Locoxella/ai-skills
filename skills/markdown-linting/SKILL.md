@@ -15,6 +15,16 @@ This skill enforces quality and linting standards for markdown files authored or
 
 ---
 
+## Core Directive: Zero-Disabling Policy (Strict Anti-Suppression)
+
+* **NEVER disable or suppress linter rules**:
+  * Do NOT use CLI suppression flags (e.g., `--disable`).
+  * Do NOT add inline suppression comments (e.g., `<!-- markdownlint-disable -->`).
+  * Do NOT generate ad-hoc config files (e.g., `.markdownlint.json` allowing tags or relaxing rules) to mask errors.
+* **Always fix the markdown source natively**: Every linter error or warning must be solved directly in the source markdown using valid, clean, and portable Markdown syntax.
+
+---
+
 ## When to Apply
 
 * When creating or modifying `README.md` or files inside `docs/` in any repository.
@@ -27,7 +37,7 @@ This skill enforces quality and linting standards for markdown files authored or
 
 ### 1. Check with `markdownlint`
 
-Run `markdownlint-cli` via `npx` (pre-installed in the environment):
+Run `markdownlint-cli` via `npx` (pre-installed in the environment) without disabling any rules:
 
 ```bash
 npx --yes markdownlint-cli path/to/document.md
@@ -41,43 +51,42 @@ npx --yes markdownlint-cli --fix path/to/document.md
 
 ### 2. Common Linting Rules & Best Practices
 
-1. **Headers & Spacing (MD022, MD025, MD041):**
+1. **No Inline HTML (MD033):**
+   * **Absolute prohibition on HTML tags** (e.g., `<br>`, `<br/>`, `<div>`, `<span>`, `<img>`, `<b>`, `<p>`).
+   * **In Markdown tables**: Never use `<br/>` for multiline cells. Use typographic delimiters (interpuncts `·`, slashes `/`, commas `,`, or bullets `•`) or restructure into separate rows or standard Markdown list subsections.
+   * Never bypass MD033 by whitelisting elements in configuration files.
+
+2. **Headers & Spacing (MD022, MD025, MD041):**
    * Exactly one top-level `# Title` at line 1 (MD025 / MD041).
    * Ensure blank lines before and after headings (MD022).
    * Heading levels must not increment by more than one level at a time (e.g., do not jump from `#` directly to `###`) (MD001).
 
-2. **Lists & Bullet Styles (MD004, MD007, MD032):**
+3. **Lists & Bullet Styles (MD004, MD007, MD032):**
    * Consistent list markers (prefer `*` or `-` uniformly throughout the document).
    * Surround list blocks with blank lines (MD032).
 
-3. **Code Blocks (MD040, MD031):**
+4. **Code Blocks (MD040, MD031):**
    * Fenced code blocks must specify a language identifier (e.g., `bash`, `python`, `text`, `json`, `sql`) (MD040).
    * Surround code fences with blank lines (MD031).
 
-4. **Whitespace & Trailing Spaces (MD009, MD012, MD047):**
+5. **Whitespace & Trailing Spaces (MD009, MD012, MD047):**
    * No trailing whitespace at end of lines (MD009).
    * No multiple consecutive blank lines (MD012).
    * Files must end with a single newline character (MD047).
 
-5. **Tables & Line Length (MD013):**
+6. **Tables & Formatting (MD013, MD056):**
    * Align pipes and table rows cleanly for readability in both raw text and rendered viewers.
-   * By default, unless the project has strict 80-char column wrapping rules, pass `--disable MD013` to avoid artificial line breaks in long URLs or paragraphs, or wrap lines cleanly.
+   * Ensure column counts match headers consistently across all rows.
+   * Wrap long descriptive text cleanly across lines where appropriate.
 
 ---
 
 ## Verification Step
 
-Always run the linter on the target file before completing the task.
-Note: When passing `--disable`, terminate the list of rules with `--` before the file path so the CLI knows the path is not a rule:
+Always run the linter on the target file without suppression flags before completing the task:
 
 ```bash
-npx --yes markdownlint-cli --disable MD013 -- path/to/edited-file.md
-```
-
-To automatically fix formatting issues:
-
-```bash
-npx --yes markdownlint-cli --disable MD013 --fix -- path/to/edited-file.md
+npx --yes markdownlint-cli path/to/edited-file.md
 ```
 
 Ensure the command exits cleanly with code `0`.
