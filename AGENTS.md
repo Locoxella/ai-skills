@@ -83,3 +83,12 @@ Before staging or pushing changes:
 - Write instructions agnostic of agent runtime quirks unless documenting a specific platform adapter.
 - Rely on standard tools (POSIX bash commands, standard file reading/writing, git conventions).
 - Never assume a proprietary tool is available without mentioning fallback shell commands.
+
+---
+## Language, Token Optimization & Agent Directives
+- **Operating Principle & Token Efficiency**: English is strictly mandatory across all agent operations to preserve token budgets and avoid sub-word tokenization overhead.
+- **Language Boundaries**:
+  - **Rules, Skills & Prompts**: Strictly English.
+  - **Internal Reasoning & Thoughts**: Strictly English (agents must never reason in Spanish).
+  - **Documentation & Commits**: Strictly English (`README.md`, `docs/`, code comments, commit messages).
+  - **User Interactions**: Default to English in chat for maximum conciseness and token economy. Only reply in Spanish if the user explicitly requests Spanish.
