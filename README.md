@@ -1,21 +1,23 @@
 # AI Skills Library
 
-> A cross-agent, modular skill catalog for autonomous AI coding agents
-> (Antigravity, Claude Code, Cursor, Codex, OpenCodeInterpreter, etc.).
+> A cross-agent, layered skill and memory starter kit for AI coding agents
+> (Antigravity, Claude Code, Cursor, Codex, OpenCodeInterpreter).
 
 ---
 
 ## ⚡ TL;DR for Humans
 
-- **What is this?**: A centralized repository of modular agent instructions
-  ("skills"). Each skill defines specific expertise, workflows, verification
-  steps, and best practices that any modern AI agent can load into its context.
-- **Where are the skills?**: Inside the [`skills/`](skills/) directory. Each
-  skill has its own folder with a `SKILL.md` entrypoint.
-- **For Agents**: Agents must review and follow [`AGENTS.md`](AGENTS.md) when
-  maintaining or authoring skills.
-- **Language Policy**: In accordance with token-efficiency standards, all
-  skills, documentation, and commit messages are maintained in English.
+- **Layered Architecture**: Organizes agent context into 4 fast-lookup
+  layers: `INDEX.md` (routing) -> `P0/P1` core memory (`GEMINI.md` /
+  `AGENTS.md`) -> `P2` skills (`SKILL.md`) -> `P3` references (`references/`).
+- **Zero-Secret Starter Templates**: [`templates/`](templates/) provides
+  ready-to-use `INDEX.md`, `GEMINI.md`, `AGENTS.md`, and
+  [`secrets-setup.md`](templates/secrets-setup.md) explaining how to generate
+  and inject secrets safely without ever committing credentials.
+- **For Agents**: Review and follow [`AGENTS.md`](AGENTS.md) when maintaining
+  or authoring skills.
+- **Language Policy**: All skills, rules, documentation, and commits default
+  to English for maximum token efficiency.
 
 ---
 
@@ -24,16 +26,17 @@
 ```text
 ai-skills/
 ├── README.md               # Human overview & quick start (this file)
-├── AGENTS.md               # Strict operational instructions for AI agents
+├── AGENTS.md               # Core agent directives (P0/P1)
 ├── LICENSE                 # Open-source MIT license
-├── .gitignore              # Standard git exclusion rules (gitignore.io)
-├── .github/workflows/      # Automated CI workflows (skills validation)
-├── scripts/                # Validation and multi-agent management scripts
-│   ├── validate-skills.py  # Linting & verification suite for skills
-│   ├── install-skills.sh   # Automated symlink installer for agents
-│   ├── new-skill.sh        # Scaffolding tool for new skills
-│   └── generate-catalog.py # Catalog generator
-└── skills/                 # Catalog of AI skills
+├── .gitignore              # Standard exclusions (gitignore.io)
+├── .github/workflows/      # Automated CI validation
+├── templates/              # Starter P0/P1/INDEX & secret-setup docs
+├── scripts/                # Bootstrap & validation scripts
+│   ├── validate-skills.py  # Schema, link, script & secret validator
+│   ├── install-skills.sh   # Multi-agent skill & template installer
+│   ├── new-skill.sh        # P2/P3 skill scaffolding tool
+│   └── generate-catalog.py # Catalog tree generator
+└── skills/                 # Catalog of AI skills (P2/P3)
     ├── cicd-pipeline-excellence    # Author, audit, and maintain GitHub Acti...
     ├── cloudflare                  # Comprehensive Cloudflare platform skill...
     ├── cloudflare-email-service    # Send and receive transactional emails w...
@@ -51,108 +54,72 @@ ai-skills/
 
 ---
 
-## 🚀 How to Install & Adopt Skills
+## 🚀 Bootstrap an Agent from Scratch
 
 ### 1. 🤖 One-Shot Agent Self-Installation (Recommended)
 
-Instead of manually running terminal commands, paste one of the following
-prompts into your AI coding assistant (Antigravity, Cursor, Claude Code, etc.):
-
-#### Option A: Global Installation (All Skills)
-
-Copy and paste to your agent:
+Paste this prompt into a fresh agent session on a new machine:
 
 ```text
-Adopt all skills from https://github.com/Locoxella/ai-skills:
-inspect or clone the repository and run ./scripts/install-skills.sh --all
-to install them into my global agent configuration directory.
+Clone or inspect https://github.com/Locoxella/ai-skills and run
+./scripts/install-skills.sh --agent antigravity --bootstrap --all
+to install global starter memory templates (INDEX.md, GEMINI.md,
+secrets-setup.md) and symlink all skills. Never commit or store real secrets;
+follow templates/secrets-setup.md for local .env and CLI tokens.
 ```
 
-#### Option B: Workspace-Scoped Installation (Specific Skills)
-
-Copy and paste to your agent in your current project:
+For project-scoped initialization inside any repository:
 
 ```text
-Inspect https://github.com/Locoxella/ai-skills and install the <skill-name>
-skill into this project workspace (.agents/skills/ or .cursor/skills/)
-so it is active for this repository.
+Inspect https://github.com/Locoxella/ai-skills and run
+./scripts/install-skills.sh --agent antigravity --scope project --bootstrap
+to install .agents/AGENTS.md and symlink the requested skills.
 ```
 
 ---
 
-### 2. 💻 Scripted Installation (CLI / Dotfiles)
-
-Use the bundled installation script to symlink skills into your agent's
-configuration:
+### 2. 💻 Scripted Bootstrap & Installation (CLI)
 
 ```bash
 # List all available skills
 ./scripts/install-skills.sh --list
 
-# Install all skills globally for Google Antigravity
-./scripts/install-skills.sh --agent antigravity --all
+# Bootstrap global memory templates + symlink all skills for Antigravity
+./scripts/install-skills.sh --agent antigravity --bootstrap --all
 
-# Install a specific skill for Cursor or Claude Code
-./scripts/install-skills.sh --agent cursor --skill cloudflare
-./scripts/install-skills.sh --agent claude --skill git-commit-push
+# Bootstrap a repository workspace (.agents/AGENTS.md + skills)
+./scripts/install-skills.sh --agent antigravity --scope project --bootstrap
+
+# Preview without modifying files (--force overwrites existing templates)
+./scripts/install-skills.sh --bootstrap --dry-run
+
+# Install a single skill for Cursor or Claude Code
+./scripts/install-skills.sh --agent cursor --scope project -s git-commit-push
+./scripts/install-skills.sh --agent claude --scope project --bootstrap --all
 ```
 
 ---
 
-### 3. 📂 Manual Symlink Installation
+### 3. 🔐 Safe Secret Setup (Public Repo Policy)
 
-#### 1. Google Antigravity
-
-To install a skill globally for Antigravity:
-
-```bash
-# Symlink or copy the skill into your global Antigravity config directory:
-ln -s "$(pwd)/skills/<skill-name>" "$HOME/.gemini/config/skills/<skill-name>"
-```
-
-Or for a specific project workspace:
-
-```bash
-ln -s "$(pwd)/skills/<skill-name>" "/path/to/project/.agents/skills/<skill-name>"
-```
-
-#### 2. Claude Code / Anthropic
-
-Copy the desired skill contents or include it in `CLAUDE.md`:
-
-```bash
-# Append skill instructions to your project CLAUDE.md or reference them
-cat skills/<skill-name>/SKILL.md >> /path/to/project/CLAUDE.md
-```
-
-#### 3. Cursor / Codex / Copilot
-
-Place the skill into `.cursorrules` or `.github/copilot-instructions.md`, or
-reference the markdown file directly in your system prompts:
-
-```bash
-cp skills/<skill-name>/SKILL.md /path/to/project/.cursorrules
-```
+This repository is public and never stores real tokens, keys, or passwords.
+Use placeholders (`<API_KEY>`, `<HOST_IP>`, `${ENV_VAR}`) everywhere in docs
+and follow [`templates/secrets-setup.md`](templates/secrets-setup.md) to
+generate keys locally (`openssl rand`, `ssh-keygen`) and inject them at
+runtime via `chmod 600 .env`, `EnvironmentFile`, or CLI auth (`gh auth login`).
 
 ---
 
 ## 🛠️ Maintaining & Contributing Skills
 
-1. **Keep Skills Atomic**: Each folder should address one clear capability or
-   domain.
-2. **Follow the Standard Frontmatter**:
-
-   ```markdown
-   ---
-   name: skill-name
-   description: When and why to activate this skill.
-   ---
-   ```
-
-3. **No Secrets**: Never commit private keys, real tokens, or personal server
-   passwords. Use placeholders (`<API_KEY>`, `<HOST_IP>`).
-4. **Agent Guidelines**: Refer to [`AGENTS.md`](AGENTS.md) for full
-   instructions on autonomous agent maintenance.
+1. **Scaffold with P2/P3 Structure**: Run `./scripts/new-skill.sh <skill-name>`
+   to create a `kebab-case` folder with `WHEN:` / `WHEN NOT:` frontmatter
+   triggers and a `references/` directory.
+2. **Keep Skills Atomic**: One responsibility per skill; move large snippets,
+   schemas, and command lists to `references/*.md`.
+3. **Validate Before PR**: Run `python3 scripts/generate-catalog.py` and
+   `python3 scripts/validate-skills.py`, then open a Pull Request.
+4. **Agent Guidelines**: Refer to [`AGENTS.md`](AGENTS.md) for full rules.
 
 ---
 

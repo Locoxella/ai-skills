@@ -39,16 +39,17 @@ def update_readme(catalog):
     tree_lines = [
         "ai-skills/",
         "├── README.md               # Human overview & quick start (this file)",
-        "├── AGENTS.md               # Strict operational instructions for AI agents",
+        "├── AGENTS.md               # Core agent directives (P0/P1)",
         "├── LICENSE                 # Open-source MIT license",
-        "├── .gitignore              # Standard git exclusion rules (gitignore.io)",
-        "├── .github/workflows/      # Automated CI workflows (skills validation)",
-        "├── scripts/                # Validation and multi-agent management scripts",
-        "│   ├── validate-skills.py  # Linting & verification suite for skills",
-        "│   ├── install-skills.sh   # Automated symlink installer for agents",
-        "│   ├── new-skill.sh        # Scaffolding tool for new skills",
-        "│   └── generate-catalog.py # Catalog generator",
-        "└── skills/                 # Catalog of AI skills",
+        "├── .gitignore              # Standard exclusions (gitignore.io)",
+        "├── .github/workflows/      # Automated CI validation",
+        "├── templates/              # Starter P0/P1/INDEX & secret-setup docs",
+        "├── scripts/                # Bootstrap & validation scripts",
+        "│   ├── validate-skills.py  # Schema, link, script & secret validator",
+        "│   ├── install-skills.sh   # Multi-agent skill & template installer",
+        "│   ├── new-skill.sh        # P2/P3 skill scaffolding tool",
+        "│   └── generate-catalog.py # Catalog tree generator",
+        "└── skills/                 # Catalog of AI skills (P2/P3)",
     ]
 
     for i, (name, desc) in enumerate(catalog):

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ==============================================================================
-# new-skill.sh - Scaffold a new standard skill directory
+# new-skill.sh - Scaffold a new P2/P3 skill directory
 # ==============================================================================
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -13,7 +13,7 @@ usage() {
 Usage: ./scripts/new-skill.sh <skill-name>
 
 Arguments:
-  <skill-name>  The kebab-case name of the new skill (e.g., docker-compose-ops)
+  <skill-name>  Lowercase kebab-case skill name (e.g., docker-compose-ops)
 
 Examples:
   ./scripts/new-skill.sh redis-cluster-admin
@@ -42,38 +42,40 @@ fi
 
 echo "Creating new skill scaffolding for: ${SKILL_NAME}..."
 
-mkdir -p "${TARGET_DIR}/references"
-mkdir -p "${TARGET_DIR}/scripts"
-mkdir -p "${TARGET_DIR}/examples"
+mkdir -p "${TARGET_DIR}/references" "${TARGET_DIR}/scripts"
 
-# Generate title from kebab-case
+TODAY="$(date +%Y-%m-%d)"
 TITLE=$(echo "${SKILL_NAME}" | awk -F- '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
 
 cat << EOF > "${TARGET_DIR}/SKILL.md"
 ---
 name: ${SKILL_NAME}
-description: Concise 1-2 sentence description explaining when and why the agent should activate this skill.
+description: >-
+  Concise 1-sentence summary of the single responsibility covered by this skill.
+  WHEN: trigger keywords, file paths, or situations when the agent should load this skill.
+  WHEN NOT: adjacent scenarios where this skill must not be loaded.
 ---
 
-# ${TITLE} Skill
+# ${TITLE} (\`last-verified: ${TODAY}\`)
 
-## Overview & Trigger Conditions
-When and why this skill should be activated by an agent.
+Depends on Core Directives: [AGENTS.md (\`#p0\`)](../../AGENTS.md#p0)
 
-## Workflow & Constraints
-Step-by-step instructions, constraints, safety checks, and best practices.
+## Decision Flow & Procedure
 
-### 1. Step Title
-- Specific guideline or command.
+1. **Step 1**: Imperative action or verification check.
+2. **Step 2**: Imperative execution command using placeholders (\`<PLACEHOLDER>\`, \`\${ENV_VAR}\`) only.
 
-### 2. Step Title
-- Specific guideline or command.
+## Reference Details (P3)
 
-## References & Examples
-- See [references/](./references/) for deep-dive technical notes.
-- See [examples/](./examples/) for code snippets.
+- Commands, schemas, and edge cases: [reference.md](./references/reference.md)
 EOF
 
-echo "✔ Successfully scaffolded new skill at: skills/${SKILL_NAME}"
-echo "  - Entrypoint: skills/${SKILL_NAME}/SKILL.md"
-echo "  - Directories: references/, scripts/, examples/"
+cat << EOF > "${TARGET_DIR}/references/reference.md"
+# ${TITLE} Reference (\`last-verified: ${TODAY}\`)
+
+Store bulky examples, IDs, URLs, and edge cases here instead of repeating them in \`SKILL.md\`.
+EOF
+
+echo "✔ Successfully scaffolded P2/P3 skill at: skills/${SKILL_NAME}"
+echo "  - P2 Entrypoint: skills/${SKILL_NAME}/SKILL.md"
+echo "  - P3 Reference:  skills/${SKILL_NAME}/references/reference.md"
