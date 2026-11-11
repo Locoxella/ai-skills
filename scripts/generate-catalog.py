@@ -53,9 +53,10 @@ def update_readme(catalog):
 
     for i, (name, desc) in enumerate(catalog):
         prefix = "    └── " if i == len(catalog) - 1 else "    ├── "
-        # Truncate description for tree comment
-        short_desc = desc if len(desc) <= 50 else desc[:47] + "..."
-        tree_lines.append(f"{prefix}{name:<27} # {short_desc}")
+        col_width = max(27, len(name))
+        max_desc = max(10, 80 - len(prefix) - col_width - 3)
+        short_desc = desc if len(desc) <= max_desc else desc[: max_desc - 3] + "..."
+        tree_lines.append(f"{prefix}{name:<{col_width}} # {short_desc}")
 
     tree_str = "```text\n" + "\n".join(tree_lines) + "\n```"
 
