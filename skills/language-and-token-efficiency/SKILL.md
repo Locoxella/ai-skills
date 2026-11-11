@@ -1,30 +1,21 @@
 ---
 name: language-and-token-efficiency
-description: Directives for language boundaries and token optimization. Enforces English for skills, rules, code, commits, docs, agent scratchpads, and chat interactions by default (Spanish only upon explicit user request).
+description: >-
+  Enforce English across all agent thoughts, skills, rules, code, commits, docs, and default chat responses to maximize token efficiency.
+  WHEN: authoring or refactoring skills, rules, documentation, code comments, commit messages, or responding in chat.
+  WHEN NOT: writing localized application i18n strings or responding when the user explicitly requests output in Spanish.
 ---
 
-# Language, Token Optimization & Documentation Directives
+# Language & Token Efficiency Directives (`last-verified: 2026-11-11`)
 
-## 1. Operating Principle & Token Efficiency
-Token efficiency is a core engineering constraint for this environment. Due to sub-word tokenization mechanics, English is significantly more cost-efficient and preserves context window space far better than Spanish (avoiding the language tax on recurring context). 
+Depends on Core Directives: [AGENTS.md (`#p0`)](../../AGENTS.md#p0)
 
-You must adopt this policy as a fundamental operational rule across all tasks, skills, and memory systems.
+## Language Boundaries
 
-## 2. Language Boundaries & Roles
-
-| Component / Artifact | Mandatory Language | Details |
+| Artifact / Channel | Mandatory Language | Rule |
 |---|---|---|
-| **Skills / Tool Definitions (`SKILL.md`, etc.)** | **English** | Re-injected repeatedly into the context window; maximum token density required. |
-| **Internal Scratchpads, Agent Thoughts & Logs** | **English** | Consumes output tokens and cascades into future turn inputs. Must remain concise and in English. |
-| **Codebase & Commits** | **English** | Code comments, docstrings, variable names, commit messages, and PR descriptions. |
-| **Documentation & Project Files** | **English** | `README.md`, architecture docs, operational runbooks, and config files default to English. |
-| **Chat / Conversational Responses** | **English (Default)** | Default to English for maximum conciseness and token economy. Only reply in Spanish if the user explicitly requests Spanish. |
-
-## 3. Exceptions & Overrides
-* **Chat Language Override**: Only switch conversational responses to Spanish when the user explicitly requests answers in Spanish.
-* **Human-Facing Documentation Override:** All documentation defaults to English. Only write documentation (such as a `README.md` or end-user manuals) in Spanish or another language if explicitly instructed: *"Generate this documentation in [Language]"*.
-* **Code Strings / i18n:** User-facing localization strings within application code should follow the project's localization requirements.
-
-## 4. Skills Integration & Self-Enforcement
-* Whenever creating, refactoring, or saving persistent skills or instructions, write them entirely in English.
-* Incorporate this token-awareness rule into your skill creation workflows so newly generated skills maintain this standard automatically.
+| **Skills, Rules & Tool Definitions (`SKILL.md`, `AGENTS.md`, `GEMINI.md`)** | **English** | Write strictly in concise, imperative English to minimize recurring context tokens. |
+| **Internal Thoughts & Scratchpads** | **English** | Always think and reason in English, even when prompted in Spanish. |
+| **Codebase, Comments, Commits & PRs** | **English** | Write all identifiers, docstrings, comments, Conventional Commits, and PR descriptions in English. |
+| **Documentation (`README.md`, `docs/`)** | **English** | Write in English unless the user explicitly commands: *"Generate this documentation in [Language]"*. |
+| **Chat Responses to User** | **English (Default)** | Respond in English even when the user writes in Spanish for convenience; reply in Spanish only when the user explicitly asks for the response in Spanish. |

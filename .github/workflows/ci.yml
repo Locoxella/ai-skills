@@ -5,24 +5,57 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   validate:
     name: Validate Skills Library
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install pyyaml
 
       - name: Run Skills Validator
-        run: python3 scripts/validate-skills.py
+        id: validator
+        run: |
+          python3 scripts/validate-skills.py | tee /tmp/validator_out.txt
+
+      - name: Publish Dynamic Validation Summary
+        if: always()
+        run: |
+          SKILL_COUNT=$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)
+          REF_COUNT=$(find skills -path "*/references/*.md" -type f | wc -l)
+          SCRIPT_COUNT=$(find scripts skills -name "*.sh" -o -name "*.py" | wc -l)
+          STATUS_ICON="${{ steps.validator.outcome == 'success' && '✅ Passed' || '❌ Failed' }}"
+
+          {
+            echo "## 🛡️ AI Skills Library Validation Summary"
+            echo ""
+            echo "| Metric | Value | Status |"
+            echo "| :--- | :---: | :---: |"
+            echo "| **Validation Outcome** | \`scripts/validate-skills.py\` | ${STATUS_ICON} |"
+            echo "| **Skills Audited (P2)** | \`${SKILL_COUNT}\` | ✅ Verified |"
+            echo "| **Reference Docs (P3)** | \`${REF_COUNT}\` | ✅ Links Checked |"
+            echo "| **Executable Scripts** | \`${SCRIPT_COUNT}\` | ✅ Shebang & \`+x\` |"
+            echo "| **Commit / Ref** | \`${GITHUB_SHA::7}\` (\`${GITHUB_REF_NAME}\`) | 🌐 \`${GITHUB_EVENT_NAME}\` |"
+          } > /tmp/step_summary.md
+
+          cat /tmp/step_summary.md
+          cat /tmp/step_summary.md >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "${{ steps.validator.outcome }}" = "success" ]; then
+            echo "::notice title=Skills Validation Passed::Audited ${SKILL_COUNT} skills, ${REF_COUNT} reference docs, and ${SCRIPT_COUNT} scripts with zero errors."
+          else
+            echo "::error title=Skills Validation Failed::One or more skills failed schema, link, or secret validation."
+            exit 1
+          fi

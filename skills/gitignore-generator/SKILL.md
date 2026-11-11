@@ -1,51 +1,31 @@
 ---
 name: gitignore-generator
 description: >-
-  Generates and maintains battle-tested .gitignore files using the official Toptal gitignore.io API.
-  Mandatory whenever initializing a repository, auditing untracked files, or updating .gitignore files.
-  Combines base OS (Linux, macOS, Windows), IDE (VS Code / visualstudiocode), project tech stacks,
-  and proactive untracked artifact audits.
+  Generate and maintain two-section .gitignore files via the Toptal gitignore.io API.
+  WHEN: initializing a repository, adding a language/runtime stack, or spotting untracked OS/IDE/local files in `git status`.
+  WHEN NOT: editing application source files when `git status` is already clean.
 ---
 
-# Gitignore Generator & Repository Hygiene Skill
+# Gitignore Generator & Repository Hygiene (`last-verified: 2026-11-11`)
 
-This skill automates the creation and proactive maintenance of `.gitignore` files using the official Toptal `gitignore.io` API (`https://www.toptal.com/developers/gitignore/api/`).
+Depends on Core Directives: [AGENTS.md (`#p1`)](../../AGENTS.md#p1)
 
-## 1. Core Principles & Universal Baseline
-1. **Never create ad-hoc minimal `.gitignore` files manually**: Manual lists miss hidden OS files, editor cache, and language-specific artifacts.
-2. **Mandatory Universal Baseline**:
-   - **Operating Systems**: `linux`, `macos`, `windows`
-   - **IDEs**: `visualstudiocode` (official Toptal template for VS Code; note that `vscode` is an alias/unsupported target on the API, `visualstudiocode` must be used).
-3. **Detect & include project technologies**:
-   - Query project indicators (e.g., `Cargo.toml` -> `rust`, `pyproject.toml`/`requirements.txt` -> `python`, `main.tf` -> `terraform`, `ansible/` -> `ansible`, `package.json` -> `node`, `go.mod` -> `go`).
-4. **Append a separate Custom Project Rules block**:
-   - Keep gitignore.io output intact.
-   - Always append an isolated `# Custom Project Rules` block at the end for repository-specific secrets, local databases, temporary paths, and IDE extras like `*.code-workspace`.
+## Two-Section Architecture
 
----
+1. **Section 1 (Standard Environment & Tools)**: Generated via `https://www.toptal.com/developers/gitignore/api/<targets>`. Always include `linux,macos,windows,visualstudiocode` (plus `jetbrains,vim` where used) and detected project stacks (`python`, `rust`, `node`, `go`, `terraform`, `ansible`). Never use `vscode` (invalid API target; use `visualstudiocode`).
+2. **Section 2 (`# Custom Project Rules`)**: Appended at the bottom and never overwritten during Section 1 updates. Holds `.env*`, `*.local`, `secrets.*`, `*.db*`, `*.sqlite*`, `*.code-workspace`, `scratch/`, `tmp/`, and FUSE mounts.
 
-## 2. Proactive Untracked Artifact Hygiene
-- **Never bypass or dodge untracked developer files**: If `git status` shows files like `*.code-workspace`, local `.log`, `.env`, temporary archives, or diagnostic outputs, do not simply avoid staging them.
-- **Audit & Update**:
-  1. Verify if the file is tracked by upstream templates.
-  2. If missing, immediately append the rule to the `# Custom Project Rules` block.
-  3. Remove obsolete or deprecated patterns that no longer apply to the codebase.
+## Procedure
 
----
-
-## 3. Network Prerequisite
-The Toptal API requires network access. When running shell commands via `run_command` to query the API, specify `BypassSandbox: true` so the request is not blocked by sandbox policy.
-
----
-
-## 4. Helper Script Usage
-
-A helper script is provided at:
-`~/.gemini/config/skills/gitignore-generator/scripts/generate-gitignore.sh`
-
-It automatically includes `linux`, `macos`, `windows`, and `visualstudiocode`, queries the API, handles error checking, and appends the standard custom rules block.
-
-### Example:
-```bash
-~/.gemini/config/skills/gitignore-generator/scripts/generate-gitignore.sh python terraform ansible -o .gitignore
-```
+1. Detect project stacks from repo manifests (`pyproject.toml` -> `python`, `Cargo.toml` -> `rust`, `main.tf` -> `terraform`, `package.json` -> `node`, `go.mod` -> `go`).
+2. Preserve existing custom rules from Section 2 if `.gitignore` already exists.
+3. Run the helper script (`BypassSandbox: true` when network sandboxing is active):
+   ```bash
+   ./scripts/generate-gitignore.sh <tech1> [tech2 ...] -o .gitignore
+   ```
+   - Helper script: [generate-gitignore.sh](./scripts/generate-gitignore.sh)
+4. Audit `git status` to confirm untracked OS/IDE/env artifacts (`*.code-workspace`, `.log`, `.tfplan`) are filtered; remove obsolete custom rules.
+5. Untrack any previously committed files that belong in `.gitignore` without deleting them from disk:
+   ```bash
+   git rm -r --cached <unwanted-file-or-dir>
+   ```
