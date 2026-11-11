@@ -25,6 +25,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyyaml
 
+      - name: Validate Shell Scripts & Bootstrap Dry-Run
+        id: shell_check
+        run: |
+          find scripts skills -name "*.sh" -print0 | xargs -0 -n1 bash -n
+          ./scripts/install-skills.sh --bootstrap --dry-run --all > /tmp/bootstrap_dry_run.txt
+          cat /tmp/bootstrap_dry_run.txt
+
       - name: Run Skills Validator
         id: validator
         run: |
@@ -34,18 +41,22 @@ jobs:
         if: always()
         run: |
           SKILL_COUNT=$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)
+          TEMPLATE_COUNT=$(find templates -maxdepth 1 -type f | wc -l)
           REF_COUNT=$(find skills -path "*/references/*.md" -type f | wc -l)
           SCRIPT_COUNT=$(find scripts skills -name "*.sh" -o -name "*.py" | wc -l)
-          STATUS_ICON="${{ steps.validator.outcome == 'success' && '✅ Passed' || '❌ Failed' }}"
+          SHELL_ICON="${{ steps.shell_check.outcome == 'success' && '✅ Passed' || '❌ Failed' }}"
+          VAL_ICON="${{ steps.validator.outcome == 'success' && '✅ Passed' || '❌ Failed' }}"
 
           {
             echo "## 🛡️ AI Skills Library Validation Summary"
             echo ""
             echo "| Metric | Value | Status |"
             echo "| :--- | :---: | :---: |"
-            echo "| **Validation Outcome** | \`scripts/validate-skills.py\` | ${STATUS_ICON} |"
+            echo "| **Shell Syntax & Bootstrap Dry-Run** | \`scripts/*.sh\` | ${SHELL_ICON} |"
+            echo "| **Skills & Secrets Validator** | \`scripts/validate-skills.py\` | ${VAL_ICON} |"
             echo "| **Skills Audited (P2)** | \`${SKILL_COUNT}\` | ✅ Verified |"
             echo "| **Reference Docs (P3)** | \`${REF_COUNT}\` | ✅ Links Checked |"
+            echo "| **Starter Templates** | \`${TEMPLATE_COUNT}\` | ✅ Verified |"
             echo "| **Executable Scripts** | \`${SCRIPT_COUNT}\` | ✅ Shebang & \`+x\` |"
             echo "| **Commit / Ref** | \`${GITHUB_SHA::7}\` (\`${GITHUB_REF_NAME}\`) | 🌐 \`${GITHUB_EVENT_NAME}\` |"
           } > /tmp/step_summary.md
@@ -53,9 +64,9 @@ jobs:
           cat /tmp/step_summary.md
           cat /tmp/step_summary.md >> "$GITHUB_STEP_SUMMARY"
 
-          if [ "${{ steps.validator.outcome }}" = "success" ]; then
-            echo "::notice title=Skills Validation Passed::Audited ${SKILL_COUNT} skills, ${REF_COUNT} reference docs, and ${SCRIPT_COUNT} scripts with zero errors."
+          if [ "${{ steps.shell_check.outcome }}" = "success" ] && [ "${{ steps.validator.outcome }}" = "success" ]; then
+            echo "::notice title=Skills Validation Passed::Audited ${SKILL_COUNT} skills, ${TEMPLATE_COUNT} templates, ${REF_COUNT} refs, and ${SCRIPT_COUNT} scripts."
           else
-            echo "::error title=Skills Validation Failed::One or more skills failed schema, link, or secret validation."
+            echo "::error title=Skills Validation Failed::One or more checks failed. Review step logs."
             exit 1
           fi
